@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, Text, TextInput } from 'react-native';
+import { View, StyleSheet, FlatList, Text, TextInput, Button,  FormLabel, FormInput, FormValidationMessage } from 'react-native';
 import { Constants } from 'expo';
+import { StackNavigator } from 'react-navigation';
+
 
 export default class App extends Component {
+
   state = {
   value: '',
   actions: [],
@@ -16,6 +19,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
+
        <TextInput
          placeholder="New Text"
          returnKeyType="done"
@@ -23,10 +27,29 @@ export default class App extends Component {
          onChangeText={this.textChanged}
          onSubmitEditing={this.submit}
        />
+       <View style={styles.container}>
+       {this.state.actions.map(({ timestamp, type, value }) => (
+         <Text key={timestamp}>
+           <Text style={{ fontWeight: 'bold' }}>{type}</Text>
+           <Text>{JSON.stringify(value)}</Text>
+           <Button title = "remove" onPress={this.removeItem}/>
+           <Button title = "edit" onPress={this.editItem}/>
+         </Text>
+       ))}
         <FlatList data={this.state.items} renderItem={this.renderItem} />
+      </View>
+
       </View>
     );
   }
+
+// removeItem = ({item},index) =>(
+//   console.log("usun")
+//   //{item}.splice(index,1)
+// )
+// editItem = ({item}) =>(
+//   console.log("usun")
+// )
 
   renderItem = ({ item }) => (
     <View style={styles.item}>
@@ -41,7 +64,7 @@ export default class App extends Component {
       value: text,
       actions: state.actions.concat({
         timestamp: new Date().getTime(),
-        type: 'TEXT_CHANGED',
+        type: 'New Item',
         value: text,
       }),
     }));
