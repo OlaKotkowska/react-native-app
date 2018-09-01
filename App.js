@@ -43,13 +43,13 @@ export default class App extends Component {
     );
   }
 
-// removeItem = ({item},index) =>(
-//   console.log("usun")
-//   //{item}.splice(index,1)
-// )
-// editItem = ({item}) =>(
-//   console.log("usun")
-// )
+removeItem = ({item},index) =>(
+  console.log("usun")
+  //{item}.splice(index,1)
+)
+editItem = ({item}) =>(
+  console.log("usun")
+)
 
   renderItem = ({ item }) => (
     <View style={styles.item}>
