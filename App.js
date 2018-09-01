@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, Text } from 'react-native';
+import { View, StyleSheet, FlatList, Text, TextInput } from 'react-native';
 import { Constants } from 'expo';
 
 export default class App extends Component {
   state = {
-    items: new Array(100).fill(0).map((a, i) => i).map(i => ({
+  value: '',
+  actions: [],
+    items: new Array(5).fill(0).map((a, i) => i).map(i => ({
       title: `Title ${i}`,
       key: i,
       content: `Content number ${i}. It's a bit longer than title. It's even long enough to force a line break`,
@@ -14,6 +16,13 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
+       <TextInput
+         placeholder="New Text"
+         returnKeyType="done"
+         value={this.state.value}
+         onChangeText={this.textChanged}
+         onSubmitEditing={this.submit}
+       />
         <FlatList data={this.state.items} renderItem={this.renderItem} />
       </View>
     );
@@ -25,6 +34,26 @@ export default class App extends Component {
       <Text style={styles.content}>{item.content}</Text>
     </View>
   );
+
+
+  textChanged = text =>
+    this.setState(state => ({
+      value: text,
+      actions: state.actions.concat({
+        timestamp: new Date().getTime(),
+        type: 'TEXT_CHANGED',
+        value: text,
+      }),
+    }));
+
+  submit = () =>
+    this.setState(state => ({
+      actions: state.actions.concat({
+        timestamp: new Date().getTime(),
+        type: 'TEXT_SUBMIT',
+      }),
+    }));
+// concat() => Combine Two Strings Into One
 }
 
 const styles = StyleSheet.create({
